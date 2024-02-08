@@ -1,13 +1,15 @@
-from transformers import AutoTokenizer,AutoModelForCausalLM,pipeline
+from transformers import AutoTokenizer
+from transformers import DataCollatorForLanguageModeling
+from transformers import AutoModelForCausalLM
 
-tokenizer=AutoTokenizer.from_pretrained("big_tits/gpt2")
+model_name="distilgpt2"
+tokenizer=AutoTokenizer.from_pretrained(model_name)
 
-model=AutoModelForCausalLM.from_pretrained("big_tits/gpt2")
+tokenizer.pad_token=tokenizer.eos_token
+# Use the end of sequence token as the padding token and set `mlm=False`.
+# This will use the inputs as labels shifted to the right by one element.
+data_collator=DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-if __name__=="__main__":
+from transformers import AutoModelForCausalLM, TrainingArguments, Trainer
 
-    prompt="Somatic hypermutation allows the immune system to"
-
-    generator=pipeline("text-generation" , model=model , tokenizer=tokenizer)
-
-    print(generator(prompt))
+model=AutoModelForCausalLM.from_pretrained("distilgpt2")
