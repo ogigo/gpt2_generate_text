@@ -1,6 +1,6 @@
 import streamlit as st
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
-from model import model,tokenizer
+from inference import model,tokenizer
 
 
 # Streamlit app
